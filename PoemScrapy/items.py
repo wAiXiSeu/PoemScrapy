@@ -17,3 +17,7 @@ class PoemscrapyItem(scrapy.Item):
 
 class AuthorItem(scrapy.Item):
     author_info = Field()
+
+
+class PoemItem(scrapy.Item):
+    poem_info = Field()

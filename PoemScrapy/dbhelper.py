@@ -34,10 +34,10 @@ class DBHelper():
         conn.commit()
         cur.close()
         conn.close()
-        return rows
+        return list(rows)
 
     def insert(self, table, params):
-        sql = 'insert into ' + table + ' values (' + ','.join(['%s']*len(params)) + ')'
+        sql = 'insert into ' + table + ' values (' + ','.join(['%s'] * len(params)) + ')'
         self.execute(sql, *params)
 
     def update_by_id(self, table, entity_id=1, **params):
@@ -56,10 +56,10 @@ class DBHelper():
         return rows
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     mydb = DBHelper()
     # mydb.insert('mydbtest.author', ["9", "小王", "xw", "诗人", "erwrwe", "hehe"])
     # mydb.update_by_id('mydbtest.author', '3', name='xxxx', pinyin='xxxx')
-    result = mydb.select('mydbtest.author')
-    for r in result:
-        print(r)
+    result = mydb.execute('select * from mydbtest.author order by author_pinyin')
+    print(result)
+    print(mydb.execute('select count(*) from mydbtest.author'))
