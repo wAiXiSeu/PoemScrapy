@@ -8,6 +8,7 @@
 import re
 import scrapy
 from pypinyin import lazy_pinyin, Style
+from scrapy.exceptions import DropItem
 
 from PoemScrapy.dbhelper import DBHelper
 from PoemScrapy.items import PoemItem
@@ -37,7 +38,8 @@ class PoemSpider(scrapy.Spider):
         for index, val in enumerate(resp_entity):
             poem_item['poem_info'] = {
                 'poem_id': val.xpath('.//div[@class="cont"]/p/a/@href').re_first(r'/shiwenv_(.*)\.aspx'),
-                'poem_no': val.xpath('.//div[@class="cont"]/div[@class="contson"]/@id').re_first(r'contson(.*)') or '',
+                'poem_no': val.xpath('.//div[@class="cont"]/div[@class="contson"]/@id').re_first(
+                    r'contson(.*)') or '',
                 'poem_title': val.xpath('.//div[@class="cont"]/p/a/b/text()').extract_first(default=''),
                 'poem_content': cont_entity[index].split('——')[0] or '' if len(
                     cont_entity[index].split('——')[0] or '') <= 750 else (cont_entity[index].split('——')[

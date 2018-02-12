@@ -4,6 +4,8 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+from scrapy.exceptions import DropItem
+
 from PoemScrapy.dbhelper import DBHelper
 
 
@@ -45,14 +47,17 @@ class PoemSpiderPipeline(object):
         self.mydb = DBHelper()
 
     def process_item(self, item, spider):
-        self.mydb.insert('mydbtest.poem',
-                         [item['poem_info']['poem_id'],
-                          item['poem_info']['poem_no'],
-                          item['poem_info']['poem_title'],
-                          item['poem_info']['poem_content'],
-                          item['poem_info']['author_id'],
-                          item['poem_info']['author_name'],
-                          item['poem_info']['poem_likes'],
-                          item['poem_info']['poem_tags'],
-                          item['poem_info']['poem_link']])
+        try:
+            self.mydb.insert('mydbtest.poem',
+                             [item['poem_info']['poem_id'],
+                              item['poem_info']['poem_no'],
+                              item['poem_info']['poem_title'],
+                              item['poem_info']['poem_content'],
+                              item['poem_info']['author_id'],
+                              item['poem_info']['author_name'],
+                              item['poem_info']['poem_likes'],
+                              item['poem_info']['poem_tags'],
+                              item['poem_info']['poem_link']])
+        except:
+            raise DropItem('error occurred in %s' % item)
         return item

@@ -40,5 +40,5 @@ class AuthorSpider(scrapy.Spider):
             }
             yield author_item
         next_page = response.xpath('//a[@style="width:60px;"]/@href').extract()
-        if next_page is not None:
+        if len(next_page) > 0:
             yield response.follow(next_page[-1], self.parse)
