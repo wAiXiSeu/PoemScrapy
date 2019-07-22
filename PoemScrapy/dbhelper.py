@@ -7,11 +7,12 @@
 # @Software: PyCharm Community Edition
 
 import pymysql as mysql
+import pymongo
 from scrapy.utils.project import get_project_settings
 
 
 # MySQL数据库帮助类
-class DBHelper():
+class MySQLHelper():
     def __init__(self):
         self.settings = get_project_settings()
         self.host = self.settings['MYSQL_HOST']
@@ -56,10 +57,30 @@ class DBHelper():
         return rows
 
 
+# Mongo
+class MongoHelper(object):
+    def __init__(self):
+        self.settings = get_project_settings()
+        self.user = self.settings["MONG_USER"]
+        self.password = self.settings["MONGO_PASSWORD"]
+        self.db = self.settings["MONGO_DBNAME"]
+        self.host = self.settings["MONGO_HOST"]
+        self.port = self.settings["MONGO_PORT"]
+        self.client = pymongo.MongoClient(host=self.host, port=self.port)
+
+    def get_collection(self, collection):
+        db = self.client.get_database(self.db)
+        conn = db.get_collection(collection)
+        return conn
+
+
 if __name__ == '__main__':
-    mydb = DBHelper()
+    # mydb = MySQLHelper()
     # mydb.insert('mydbtest.author', ["9", "小王", "xw", "诗人", "erwrwe", "hehe"])
     # mydb.update_by_id('mydbtest.author', '3', name='xxxx', pinyin='xxxx')
-    result = mydb.execute('select * from mydbtest.author order by author_pinyin')
-    print(result)
-    print(mydb.execute('select count(*) from mydbtest.author'))
+    # result = mydb.execute('select * from mydbtest.author order by author_pinyin')
+    # print(result)
+    # print(mydb.execute('select count(*) from mydbtest.author'))
+    instance = MongoHelper()
+    collection = instance.get_collection("test_poem")
+    print(collection.find_one({}))

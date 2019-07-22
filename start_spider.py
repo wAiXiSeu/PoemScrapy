@@ -9,4 +9,4 @@
 from scrapy import cmdline as cmd
 
 # cmd.execute("scrapy crawl author".split())
-cmd.execute("scrapy crawl poem".split())
+cmd.execute("scrapy crawl author".split())

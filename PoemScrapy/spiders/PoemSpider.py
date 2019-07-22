@@ -10,7 +10,7 @@ import scrapy
 from pypinyin import lazy_pinyin, Style
 from scrapy.exceptions import DropItem
 
-from PoemScrapy.dbhelper import DBHelper
+from PoemScrapy.dbhelper import MySQLHelper
 from PoemScrapy.items import PoemItem
 
 
@@ -24,7 +24,7 @@ class PoemSpider(scrapy.Spider):
         self.start_urls = self._get_poem_first_links()
 
     def _get_poem_first_links(self):
-        self.db = DBHelper()
+        self.db = MySQLHelper()
         poem_links = self.db.execute('select poem_first_link from mydbtest.author')
         urls = []
         for pl in poem_links:
