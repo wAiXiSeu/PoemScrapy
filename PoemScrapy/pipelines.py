@@ -9,11 +9,6 @@ from scrapy.exceptions import DropItem
 from PoemScrapy.dbhelper import MongoHelper
 
 
-class PoemscrapyPipeline(object):
-    def process_item(self, item, spider):
-        return item
-
-
 # 将爬取到的作者信息写入数据库
 class AuthorSpiderPipeline(object):
     def __init__(self):

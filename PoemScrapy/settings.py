@@ -64,10 +64,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    # 'PoemScrapy.pipelines.PoemscrapyPipeline': 300,
-    # 'PoemScrapy.pipelines.AuthorSpiderPipeline': 300, #保存到mysql数据库
-    'PoemScrapy.pipelines.AuthorSpiderWithoutInsertPipeline': 300,
-    'PoemScrapy.pipelines.PoemSpiderPipeline': 300,  # 保存到mysql数据库
+    'PoemScrapy.pipelines.AuthorSpiderPipeline': 300, #保存到mysql数据库
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
