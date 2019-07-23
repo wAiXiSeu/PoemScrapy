@@ -18,27 +18,35 @@ class AuthorSpider(scrapy.Spider):
     allowed_domains = ['so.gushiwen.org']
     start_urls = ['http://so.gushiwen.org/authors/Default.aspx?p=1&c=%E5%94%90%E4%BB%A3']
 
+    # def parse(self, response):
+    #     author_item = AuthorItem()
+    #     dynasty = response.xpath('//div[@class="titletype"]/div/h1/text()').extract_first()
+    #     resp_entity = response.xpath('//div[@class="sonspic"]')
+    #     for r in resp_entity:
+    #         author_item['author_info'] = {
+    #             'id': r.xpath('.//div/p/a/@href').re_first(r'/authorv_(.*)\.aspx'),
+    #             'name': r.xpath('.//div/p/a/b/text()').extract_first(default='no_data'),
+    #             'dynasty': dynasty,
+    #             'pinyin': ''.join(lazy_pinyin(r.xpath('.//div/p/a/b/text()').extract_first(default=''),
+    #                                                  style=Style.FIRST_LETTER)),
+    #             'poem_count': r.xpath('.//div/p/a/text()').re_first(r'► (.*)篇诗文'),
+    #             'likes': r.xpath('.//div/div/a/span/text()').extract_first(default='no_data').strip(),
+    #             'description': r.xpath('.//div/p[@style=" margin:0px;"]/text()').extract_first(
+    #                                       default='no_data'),
+    #             'author_link': 'http://so.gushiwen.org' +
+    #                            r.xpath('.//div/p/a/@href').extract_first(default='no_data'),
+    #             'poem_first_link': 'http://so.gushiwen.org' +
+    #                                r.xpath('.//div/p[@style=" margin:0px;"]/a/@href').extract_first(default='no_data')
+    #
+    #         }
+    #         yield author_item
+    #     next_page = response.xpath('//a[@style="width:60px;"]/@href').extract()
+    #     if len(next_page) > 0:
+    #         yield response.follow(next_page[-1], self.parse)
     def parse(self, response):
         author_item = AuthorItem()
-        dynasty = response.xpath('//div[@class="titletype"]/div/h1/text()').extract_first()
-        resp_entity = response.xpath('//div[@class="sonspic"]')
-        for r in resp_entity:
-            author_item['author_info'] = {
-                'id': r.xpath('.//div/p/a/@href').re_first(r'/author_(.*)\.aspx'),
-                'name': r.xpath('.//div/p/a/b/text()').extract_first(default='no_data'),
-                'dynasty': dynasty,
-                'pinyin': ''.join(lazy_pinyin(r.xpath('.//div/p/a/b/text()').extract_first(default=''),
-                                                     style=Style.FIRST_LETTER)),
-                'poem_count': r.xpath('.//div/p/a/text()').re_first(r'► (.*)篇诗文'),
-                'likes': r.xpath('.//div/div/a/span/text()').extract_first(default='no_data').strip(),
-                'description': r.xpath('.//div/p[@style=" margin:0px;"]/text()').extract_first(
-                                          default='no_data'),
-                'author_link': 'http://so.gushiwen.org' +
-                               r.xpath('.//div/p/a/@href').extract_first(default='no_data'),
-                'poem_first_link': 'http://so.gushiwen.org' +
-                                   r.xpath('.//div/p[@style=" margin:0px;"]/a/@href').extract_first(default='no_data')
-            }
-            yield author_item
-        next_page = response.xpath('//a[@style="width:60px;"]/@href').extract()
-        if len(next_page) > 0:
-            yield response.follow(next_page[-1], self.parse)
+        dynasties = response.xpath(
+            '//div[@class="main3"]/div/div[@class="titletype"]/div[@class="son2"]/div[2]/a/text()').extract()[1:]
+        dy_hrefs = response.xpath(
+            '//div[@class="main3"]/div/div[@class="titletype"]/div[@class="son2"]/div[2]/a/@href').extract()[1:]
+        yield author_item

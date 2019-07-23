@@ -14,8 +14,9 @@ class AuthorSpiderPipeline(object):
     def __init__(self):
         self.collection = MongoHelper().get_collection("author")
 
-    def process_item(self, item):
+    def process_item(self, item, spider):
         self.collection.insert_one(item["author_info"])
+        return item
 
 
 class AuthorSpiderWithoutInsertPipeline(object):
