@@ -16,7 +16,14 @@ class PoemscrapyItem(scrapy.Item):
 
 
 class AuthorItem(scrapy.Item):
-    author_info = Field()
+    author_id = Field()
+    name = Field()
+    dynasty = Field()
+    pinyin = Field()
+    poem_count = Field()
+    introduction = Field()
+    link = Field()
+    poem_link = Field()
 
 
 class PoemItem(scrapy.Item):
